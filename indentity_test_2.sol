@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -28,7 +28,7 @@ contract XEAMToken is ERC20, Ownable, ReentrancyGuard {
         address _emergencyFund,
         address _marketingWallet,
         address _stakingWallet
-    ) ERC20("XEAM Token", "XEAM") Ownable(msg.sender) { // ✅ FIXED
+    ) ERC20("XEAM Token", "XEAM") Ownable(msg.sender) {
         encouragementFund = _encouragementFund;
         emergencyFund = _emergencyFund;
         marketingWallet = _marketingWallet;
@@ -43,11 +43,13 @@ contract XEAMToken is ERC20, Ownable, ReentrancyGuard {
         override
         returns (bool)
     {
-        require(
-            balanceOf(recipient) + amount <= MAX_WALLET,
-            "Exceeds max wallet limit"
-        );
-        require(amount <= MAX_TX, "Exceeds max transaction limit");
+        if (!isExcludedFromFees[msg.sender]) {
+            require(
+                balanceOf(recipient) + amount <= MAX_WALLET,
+                "Exceeds max wallet limit"
+            );
+            require(amount <= MAX_TX, "Exceeds max transaction limit");
+        }
 
         _transferWithTaxes(msg.sender, recipient, amount);
         return true;
@@ -58,22 +60,28 @@ contract XEAMToken is ERC20, Ownable, ReentrancyGuard {
         address recipient,
         uint256 amount
     ) internal {
-        uint256 taxAmount = (amount * SELL_TAX) / 100;
-        uint256 sendAmount = amount - taxAmount;
+        uint256 tax = (amount * SELL_TAX + 99) / 100; // Avoid truncation errors
+        uint256 netAmount = amount - tax;
 
-        super._transfer(sender, encouragementFund, (taxAmount * 4) / 12);
-        emit TaxDistributed((taxAmount * 4) / 12, "Encouragement Fund");
+        // Distribute tax in exact percentages
+        uint256 encouragementShare = (tax * 4) / 12;
+        uint256 emergencyShare = (tax * 1) / 12;
+        uint256 marketingShare = (tax * 4) / 12;
+        uint256 stakingShare = (tax * 3) / 12;
 
-        super._transfer(sender, emergencyFund, (taxAmount * 1) / 12);
-        emit TaxDistributed((taxAmount * 1) / 12, "Emergency Fund");
+        super._transfer(sender, encouragementFund, encouragementShare);
+        emit TaxDistributed(encouragementShare, "Encouragement Fund");
 
-        super._transfer(sender, marketingWallet, (taxAmount * 4) / 12);
-        emit TaxDistributed((taxAmount * 4) / 12, "Marketing");
+        super._transfer(sender, emergencyFund, emergencyShare);
+        emit TaxDistributed(emergencyShare, "Emergency Fund");
 
-        super._transfer(sender, stakingWallet, (taxAmount * 3) / 12);
-        emit TaxDistributed((taxAmount * 3) / 12, "Staking");
+        super._transfer(sender, marketingWallet, marketingShare);
+        emit TaxDistributed(marketingShare, "Marketing");
 
-        super._transfer(sender, recipient, sendAmount);
+        super._transfer(sender, stakingWallet, stakingShare);
+        emit TaxDistributed(stakingShare, "Staking");
+
+        super._transfer(sender, recipient, netAmount);
     }
 
     function updateExcludedAccountStatus(address account, bool excluded)
@@ -83,4 +91,6 @@ contract XEAMToken is ERC20, Ownable, ReentrancyGuard {
         isExcludedFromFees[account] = excluded;
     }
 }
+
+
 

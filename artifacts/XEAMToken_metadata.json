@@ -727,7 +727,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -790,11 +790,11 @@
 			]
 		},
 		"indentity_test_2.sol": {
-			"keccak256": "0x4fe791a9d6e14fb0f5b96c632eda996aec90c5f53d887dae337f9c732dc3f51b",
+			"keccak256": "0xfb7d33439547ff042c42e43687587fdf9963a7de5c1010a00b472fae928e3c8f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://81120c1d433bbb4bfb160b78419aa4cb71c127487a98eceee4f4da42a27f57c5",
-				"dweb:/ipfs/QmP6UeqazjfpwPErsyy59PwpuqWdw9QBdpL4JLwTU7rZEL"
+				"bzz-raw://8e0d078bf6bf1f41a12d6a1716ece83798266e85d3e5bf861253c1d97a6e3a88",
+				"dweb:/ipfs/QmNpr1L6jxPZDFmBRG3h3v7BVupq4Nr4haVVmSpVBhao7Z"
 			]
 		}
 	},
