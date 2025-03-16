@@ -41,6 +41,9 @@ When a user sells the token, the following tax breakdown applies:
 
 ---
 
+![Tax System](/newplot.png)
+
+
 ## Key Contract Features
 
 | **Feature**                   | **Description**                                                                 |
