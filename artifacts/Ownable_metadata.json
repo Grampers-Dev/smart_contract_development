@@ -119,7 +119,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"identity_flattened.sol": "Ownable"
+			"xeam_test_contract_1_flattened.sol": "Ownable"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -127,17 +127,17 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"identity_flattened.sol": {
-			"keccak256": "0x13a4f0bc90eaefa1cdfe18b2e439feca12359cdec98e658d63f8cbb9242a810a",
+		"xeam_test_contract_1_flattened.sol": {
+			"keccak256": "0x8c54bcb391f1b52cf15adfe0dbb5c11d3a83b6c0c85881c0e98b1c9a63de9ec3",
 			"urls": [
-				"bzz-raw://ca301e18d485a05551a03d2c8ca51081edf2608aa3e5d2d09a32b7a135622e38",
-				"dweb:/ipfs/QmQxSN94kTJyzyNpEEd7q36P2gHm1jT1HzYCVk1z3zfK6B"
+				"bzz-raw://de43a86120baf2465c60dda1765713b65f29e6992c76f706fcfbf0fbc10c1a34",
+				"dweb:/ipfs/QmeuVaRe8kA4VCzm1uoUa2TEekt86DkPfrUVa4aSJDc2pD"
 			]
 		}
 	},
